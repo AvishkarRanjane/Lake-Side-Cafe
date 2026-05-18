@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Lake Side Cafe</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: { DEFAULT: '#013220', light: '#0A4A33' },
+                        woody: { DEFAULT: '#5C4033', light: '#7A5A4A' },
+                        amber: { DEFAULT: '#FFBF00', hover: '#E5A800' },
+                        creamy: { DEFAULT: '#FAFAF7', dark: '#F0F0E8' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .btn-primary {
+                @apply bg-amber text-forest font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:bg-amber-hover hover:shadow-lg w-full flex justify-center items-center gap-2;
+            }
+            .input-field {
+                @apply w-full bg-creamy-dark border border-gray-200 text-gray-800 rounded-xl px-4 py-3 focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest transition-all;
+            }
+            .qty-btn {
+                @apply w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-forest hover:bg-amber transition-colors;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-creamy text-gray-800 antialiased font-sans flex flex-col min-h-screen">
+
+    <!-- Sticky Header -->
+    <header id="main-header" class="fixed w-full z-50 transition-all duration-300 py-4 bg-forest shadow-md">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-serif font-bold text-creamy flex items-center gap-2">
+                <i class="fa-solid fa-mug-hot text-amber"></i>
+                Lake Side
+            </a>
+
+            <nav class="hidden md:flex space-x-8 items-center text-creamy font-medium">
+                <a href="index.html" class="hover:text-amber transition-colors">Home</a>
+                <a href="menu.html" class="hover:text-amber transition-colors">Menu</a>
+                <a href="index.html#about" class="hover:text-amber transition-colors">About</a>
+                <a href="cart.html" class="relative text-amber transition-colors">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-count"
+                        class="absolute -top-2 -right-3 bg-amber text-forest text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <a href="auth.html"
+                    class="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-6 py-2 rounded-full transition-all">Sign
+                    In</a>
+            </nav>
+
+            <button id="mobile-menu-btn" class="md:hidden text-creamy text-2xl focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <div id="mobile-nav"
+            class="hidden md:hidden absolute top-full left-0 w-full bg-forest shadow-xl border-t border-white/10 flex flex-col">
+            <a href="index.html" class="px-6 py-4 border-b border-white/5 text-creamy">Home</a>
+            <a href="menu.html" class="px-6 py-4 border-b border-white/5 text-creamy">Menu</a>
+            <a href="index.html#about" class="px-6 py-4 border-b border-white/5 text-creamy">About</a>
+            <a href="cart.html" class="px-6 py-4 border-b border-white/5 text-amber flex justify-between">
+                <span>Cart</span>
+                <span
+                    class="bg-amber text-forest text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center cart-count-mobile">0</span>
+            </a>
+            <a href="auth.html" class="px-6 py-4 text-amber font-semibold">Sign In</a>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="pt-32 pb-8 bg-creamy-dark">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-3xl md:text-4xl font-serif font-bold text-forest mb-2">Checkout</h1>
+            <p class="text-gray-600">Review your delicious selections and complete your order.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-8">
+
+        <div class="flex flex-col lg:flex-row gap-10">
+
+            <!-- Left Column: Cart Items -->
+            <div class="w-full lg:w-3/5">
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
+                    <h2
+                        class="text-2xl font-serif font-bold text-forest border-b border-gray-100 pb-4 mb-6 flex justify-between items-center">
+                        <span>Your Order</span>
+                        <span
+                            class="text-sm font-sans font-normal text-gray-500 bg-gray-100 px-3 py-1 rounded-full"><span
+                                id="items-total-count">0</span> Items</span>
+                    </h2>
+
+                    <!-- Empty State (Hidden by default) -->
+                    <div id="empty-cart" class="hidden text-center py-12">
+                        <div
+                            class="w-24 h-24 bg-creamy-dark rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                            <i class="fa-solid fa-basket-shopping text-4xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">Your cart is empty</h3>
+                        <p class="text-gray-500 mb-6">Looks like you haven't added anything to your cart yet.</p>
+                        <a href="menu.html"
+                            class="inline-block bg-forest text-amber px-6 py-3 rounded-full hover:bg-forest-light transition-colors">Browse
+                            Menu</a>
+                    </div>
+
+                    <!-- Cart Items Container -->
+                    <div id="cart-items" class="space-y-6">
+                        <!-- Items injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Checkout Form & Pricing -->
+            <div class="w-full lg:w-2/5">
+
+                <!-- Checkout Form -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 mb-8 sticky top-24">
+                    <h2 class="text-xl font-serif font-bold text-forest mb-6">Delivery Details</h2>
+
+                    <form id="checkout-form" class="space-y-5">
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">First
+                                    Name</label>
+                                <input type="text" class="input-field" placeholder="John" required>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">Last
+                                    Name</label>
+                                <input type="text" class="input-field" placeholder="Doe" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">Phone
+                                Number</label>
+                            <input type="tel" class="input-field" placeholder="+91 98765 43210" required>
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">Delivery
+                                Address</label>
+                            <textarea class="input-field resize-none h-24" placeholder="Enter full address..."
+                                required></textarea>
+                        </div>
+
+                        <h2 class="text-xl font-serif font-bold text-forest pt-4 pb-2 border-t border-gray-100">Payment
+                            Method</h2>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <label
+                                class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-amber transition-colors relative group">
+                                <input type="radio" name="payment" value="upi"
+                                    class="absolute top-3 right-3 text-forest focus:ring-forest" checked>
+                                <i class="fa-solid fa-qrcode text-2xl text-gray-400 group-hover:text-amber"></i>
+                                <span class="font-medium text-gray-700">UPI / QR</span>
+                            </label>
+                            <label
+                                class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-amber transition-colors relative group">
+                                <input type="radio" name="payment" value="card"
+                                    class="absolute top-3 right-3 text-forest focus:ring-forest">
+                                <i class="fa-regular fa-credit-card text-2xl text-gray-400 group-hover:text-amber"></i>
+                                <span class="font-medium text-gray-700">Card</span>
+                            </label>
+                        </div>
+
+                        <!-- Pricing Summary -->
+                        <div class="bg-creamy-dark rounded-xl p-5 mt-6 space-y-3">
+                            <div class="flex justify-between text-gray-600 text-sm">
+                                <span>Subtotal</span>
+                                <span class="font-semibold" id="subtotal">₹0</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600 text-sm">
+                                <span>GST (5%)</span>
+                                <span class="font-semibold" id="gst">₹0</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600 text-sm">
+                                <span>Delivery Fee</span>
+                                <span class="font-semibold">₹40</span>
+                            </div>
+                            <div class="border-t border-gray-300 pt-3 mt-3 flex justify-between items-center">
+                                <span class="text-forest font-bold text-lg">Total</span>
+                                <span class="text-forest font-bold text-2xl" id="final-total">₹0</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary mt-4" id="place-order-btn">
+                            Place Order <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Unified Premium Footer -->
+    <footer class="bg-forest relative overflow-hidden text-creamy pt-24 pb-12 mt-auto border-t-[8px] border-amber">
+        <!-- Decorative Background Elements -->
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber/30 to-transparent">
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+
+                <!-- Brand & Newsletter (Spans 4 cols) -->
+                <div class="lg:col-span-4 space-y-6">
+                    <a href="index.html" class="text-3xl font-serif font-bold flex items-center gap-2 group w-max">
+                        <div
+                            class="w-12 h-12 bg-amber rounded-full flex items-center justify-center text-forest group-hover:rotate-12 transition-transform duration-300 shadow-[0_0_15px_rgba(255,191,0,0.4)]">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <span class="text-white group-hover:text-amber transition-colors">Lake Side</span>
+                    </a>
+                    <p class="text-creamy/70 leading-relaxed text-sm">
+                        Experience the finest dining by the tranquil waters. Where every meal is a masterpiece and every
+                        view is a painting. Join our newsletter for exclusive offers.
+                    </p>
+                    <form class="flex relative w-full max-w-sm group"
+                        onsubmit="event.preventDefault(); window.showToast('Subscribed Successfully!');">
+                        <input type="email" placeholder="Your email address"
+                            class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-full px-6 py-3 focus:outline-none focus:border-amber focus:bg-white/20 transition-all duration-300"
+                            required>
+                        <button type="submit"
+                            class="absolute right-1 top-1 bottom-1 bg-amber text-forest font-bold px-6 rounded-full hover:bg-white transition-colors flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Quick Links (Spans 2 cols) -->
+                <div class="lg:col-span-2 lg:col-start-6">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-amber tracking-wide uppercase text-sm">Explore
+                    </h4>
+                    <ul class="space-y-4">
+                        <li><a href="index.html"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Home</a></li>
+                        <li><a href="menu.html"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Our Menu</a></li>
+                        <li><a href="index.html#about"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>About Us</a></li>
+                        <li><a href="cart.html"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Checkout</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact (Spans 3 cols) -->
+                <div class="lg:col-span-3">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-amber tracking-wide uppercase text-sm">Contact
+                        Info</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4 group">
+                            <div
+                                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber group-hover:text-forest transition-colors text-amber flex-shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span class="text-creamy/70 text-sm mt-1 leading-relaxed">2nd & 3rd floor, Cafe & Eatery,
+                                Lake Side, Plot no 162, Sector-9, New Panvel East, Panvel, Maharashtra 410206</span>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <div
+                                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber group-hover:text-forest transition-colors text-amber flex-shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span class="text-creamy/70 text-sm">086578 85181</span>
+                        </li>
+                        <li
+                            class="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-xl transition-colors">
+                            <div
+                                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber group-hover:text-forest transition-colors text-amber flex-shrink-0">
+                                <i class="fa-brands fa-google text-lg"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-amber text-sm font-bold flex items-center gap-1">
+                                    4.2 <i class="fa-solid fa-star text-xs"></i><i
+                                        class="fa-solid fa-star text-xs"></i><i class="fa-solid fa-star text-xs"></i><i
+                                        class="fa-solid fa-star text-xs"></i><i
+                                        class="fa-solid fa-star-half-stroke text-xs"></i>
+                                </div>
+                                <span class="text-creamy/70 text-xs mt-0.5">1007 Google Reviews</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Opening Hours (Spans 3 cols) -->
+                <div class="lg:col-span-3">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-amber tracking-wide uppercase text-sm">Opening
+                        Hours</h4>
+                    <div class="bg-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm">
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex justify-between items-center border-b border-white/10 pb-3">
+                                <span class="text-creamy/70">Mon - Fri</span>
+                                <span class="font-bold text-white bg-white/10 px-3 py-1 rounded-full">8 AM - 10
+                                    PM</span>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-white/10 pb-3">
+                                <span class="text-creamy/70">Saturday</span>
+                                <span class="font-bold text-white bg-white/10 px-3 py-1 rounded-full">9 AM - 11
+                                    PM</span>
+                            </li>
+                            <li class="flex justify-between items-center pt-1">
+                                <span class="text-creamy/70">Sunday</span>
+                                <span
+                                    class="font-bold text-amber bg-amber/10 border border-amber/20 px-3 py-1 rounded-full">Closed</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div
+                class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-sm text-creamy/50">
+                <p>&copy; 2026 Lake Side Cafe. Crafted with <i
+                        class="fa-solid fa-heart text-amber mx-1 animate-pulse"></i> for excellence.</p>
+
+                <!-- Social Icons -->
+                <div class="flex gap-3 mt-4 md:mt-0">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#1877F2] hover:text-white hover:-translate-y-1 transition-all duration-300 text-creamy/70 shadow-lg">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#E4405F] hover:text-white hover:-translate-y-1 transition-all duration-300 text-creamy/70 shadow-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#1DA1F2] hover:text-white hover:-translate-y-1 transition-all duration-300 text-creamy/70 shadow-lg">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Global JS -->
+    <script src="main.js"></script>
+
+    <!-- Cart Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart();
+
+            // Listen for global cart updates
+            window.addEventListener('cartUpdated', renderCart);
+        });
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const emptyCartDisplay = document.getElementById('empty-cart');
+            const cart = JSON.parse(localStorage.getItem('lakeSideCart')) || [];
+
+            let subtotal = 0;
+            let totalItems = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                emptyCartDisplay.classList.remove('hidden');
+                updatePricing(0);
+                document.getElementById('items-total-count').textContent = '0';
+                return;
+            }
+
+            emptyCartDisplay.classList.add('hidden');
+            cartItemsContainer.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                subtotal += (item.price * item.quantity);
+                totalItems += item.quantity;
+
+                const itemHTML = `
+                    <div class="flex flex-col sm:flex-row items-center gap-4 py-4 border-b border-gray-50 last:border-0 relative animate-fade-in-up" style="animation-delay: ${index * 50}ms">
+                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 rounded-xl object-cover border border-gray-100 flex-shrink-0" />
+                        
+                        <div class="flex-grow text-center sm:text-left">
+                            <h4 class="font-serif font-bold text-forest text-lg">${item.name}</h4>
+                            <p class="text-amber font-bold">₹${item.price}</p>
+                        </div>
+
+                        <div class="flex items-center gap-4 bg-creamy-dark rounded-full p-1 border border-gray-100">
+                            <button onclick="updateQuantity('${item.id}', -1)" class="qty-btn"><i class="fa-solid fa-minus text-xs"></i></button>
+                            <span class="w-6 text-center font-bold text-gray-700">${item.quantity}</span>
+                            <button onclick="updateQuantity('${item.id}', 1)" class="qty-btn"><i class="fa-solid fa-plus text-xs"></i></button>
+                        </div>
+                        
+                        <button onclick="removeItem('${item.id}')" class="absolute top-2 right-0 sm:relative sm:top-0 text-gray-300 hover:text-red-500 transition-colors px-2">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+            });
+
+            document.getElementById('items-total-count').textContent = totalItems;
+            updatePricing(subtotal);
+        }
+
+        function updatePricing(subtotal) {
+            const gst = subtotal > 0 ? Math.round(subtotal * 0.05) : 0;
+            const delivery = subtotal > 0 ? 40 : 0;
+            const finalTotal = subtotal + gst + delivery;
+
+            document.getElementById('subtotal').textContent = `₹${subtotal}`;
+            document.getElementById('gst').textContent = `₹${gst}`;
+            document.getElementById('final-total').textContent = `₹${finalTotal}`;
+
+            const btn = document.getElementById('place-order-btn');
+            if (subtotal === 0) {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        window.updateQuantity = (itemId, change) => {
+            let cart = JSON.parse(localStorage.getItem('lakeSideCart')) || [];
+            const itemIndex = cart.findIndex(i => i.id === itemId);
+
+            if (itemIndex > -1) {
+                cart[itemIndex].quantity += change;
+                if (cart[itemIndex].quantity <= 0) {
+                    cart.splice(itemIndex, 1);
+                }
+                localStorage.setItem('lakeSideCart', JSON.stringify(cart));
+                window.updateCartCountDisplay(); // from main.js
+                renderCart();
+            }
+        };
+
+        window.removeItem = (itemId) => {
+            let cart = JSON.parse(localStorage.getItem('lakeSideCart')) || [];
+            cart = cart.filter(i => i.id !== itemId);
+            localStorage.setItem('lakeSideCart', JSON.stringify(cart));
+            window.updateCartCountDisplay();
+            renderCart();
+            window.showToast("Item removed from cart");
+        };
+
+        // Handle checkout
+        document.getElementById('checkout-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const cart = JSON.parse(localStorage.getItem('lakeSideCart')) || [];
+            if (cart.length === 0) {
+                window.showToast('Your cart is empty!');
+                return;
+            }
+
+            // Mock placing order
+            const btn = document.getElementById('place-order-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                localStorage.removeItem('lakeSideCart');
+                window.updateCartCountDisplay();
+                renderCart();
+
+                // Show success modal or toast
+                window.showToast('Order placed successfully! Redirecting...');
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>

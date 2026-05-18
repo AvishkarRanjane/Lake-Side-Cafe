@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | Lake Side Cafe</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: { DEFAULT: '#013220', light: '#0A4A33' },
+                        woody: { DEFAULT: '#5C4033', light: '#7A5A4A' },
+                        amber: { DEFAULT: '#FFBF00', hover: '#E5A800' },
+                        creamy: { DEFAULT: '#FAFAF7', dark: '#F0F0E8' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .btn-primary {
+                @apply bg-amber text-forest font-semibold py-2 px-6 rounded-full transition-all duration-300 hover:bg-amber-hover hover:shadow-lg inline-block;
+            }
+            .filter-btn {
+                @apply bg-transparent border-2 border-forest text-forest font-semibold py-2 px-6 rounded-full transition-all duration-300 hover:bg-forest hover:text-creamy whitespace-nowrap;
+            }
+            .filter-btn.active {
+                @apply bg-forest text-creamy shadow-md;
+            }
+            .glass-3d {
+                @apply bg-gradient-to-br from-woody/90 to-forest/90 backdrop-blur-lg border border-amber/30 text-creamy relative overflow-hidden;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-creamy text-gray-800 antialiased font-sans flex flex-col min-h-screen">
+
+    <!-- Sticky Header (Darker background by default for inner pages) -->
+    <header id="main-header" class="fixed w-full z-50 transition-all duration-300 py-4 bg-forest shadow-md">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-serif font-bold text-creamy flex items-center gap-2">
+                <i class="fa-solid fa-mug-hot text-amber"></i>
+                Lake Side
+            </a>
+
+            <nav class="hidden md:flex space-x-8 items-center text-creamy font-medium">
+                <a href="index.html" class="hover:text-amber transition-colors">Home</a>
+                <a href="menu.html" class="hover:text-amber transition-colors text-amber">Menu</a>
+                <a href="index.html#about" class="hover:text-amber transition-colors">About</a>
+                <a href="cart.html" class="relative hover:text-amber transition-colors">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-count"
+                        class="absolute -top-2 -right-3 bg-amber text-forest text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <a href="auth.html"
+                    class="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-6 py-2 rounded-full transition-all">Sign
+                    In</a>
+            </nav>
+
+            <button id="mobile-menu-btn" class="md:hidden text-creamy text-2xl focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <div id="mobile-nav"
+            class="hidden md:hidden absolute top-full left-0 w-full bg-forest shadow-xl border-t border-white/10 flex flex-col">
+            <a href="index.html" class="px-6 py-4 border-b border-white/5 text-creamy">Home</a>
+            <a href="menu.html" class="px-6 py-4 border-b border-white/5 text-amber">Menu</a>
+            <a href="index.html#about" class="px-6 py-4 border-b border-white/5 text-creamy">About</a>
+            <a href="cart.html" class="px-6 py-4 border-b border-white/5 text-creamy flex justify-between">
+                <span>Cart</span>
+                <span
+                    class="bg-amber text-forest text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center cart-count-mobile">0</span>
+            </a>
+            <a href="auth.html" class="px-6 py-4 text-amber font-semibold">Sign In</a>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="pt-32 pb-12 bg-creamy-dark">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-serif font-bold text-forest mb-4">Our Menu</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Explore our carefully curated selection of dishes, prepared with
+                the finest ingredients to tantalize your taste buds.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-12">
+
+        <!-- 3D Menu Promo -->
+        <div
+            class="glass-3d rounded-3xl p-8 md:p-12 mb-16 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 group">
+            <!-- Background shine -->
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out">
+            </div>
+
+            <div class="z-10 md:w-2/3">
+                <span class="text-amber font-bold tracking-widest uppercase text-sm flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-cube animate-bounce"></i> Next-Gen Experience
+                </span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">View our dishes in 3D</h2>
+                <p class="text-creamy/80 leading-relaxed mb-6">
+                    Not sure what to order? Interact with our high-fidelity 3D models to see exactly what you'll be
+                    getting. Spin, zoom, and virtually taste our signature dishes!
+                </p>
+                <a href="#" id="try-3d-btn"
+                    class="bg-amber text-forest font-bold py-3 px-8 rounded-full hover:bg-white hover:text-woody transition-colors shadow-[0_0_20px_rgba(255,191,0,0.4)] flex items-center w-max gap-3">
+                    <i class="fa-solid fa-vr-cardboard"></i> Try 3D Menu (Beta)
+                </a>
+            </div>
+
+            <div class="z-10 md:w-1/3 flex justify-center">
+                <!-- A placeholder illustration for the 3D model -->
+                <div class="relative w-48 h-48">
+                    <div class="absolute inset-0 bg-amber/20 rounded-full animate-ping"></div>
+                    <img src="Pizza.avif" alt="3D Pizza Placeholder"
+                        class="w-full h-full object-cover rounded-full border-4 border-amber shadow-2xl z-10 relative transform hover:rotate-12 transition-transform duration-500" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex overflow-x-auto gap-4 pb-4 mb-10 no-scrollbar" id="menu-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="veg-soup">Veg Soups</button>
+            <button class="filter-btn" data-filter="non-veg-soup">Non-Veg Soups</button>
+            <button class="filter-btn" data-filter="salad">Salads</button>
+            <button class="filter-btn" data-filter="main-course">Main Course</button>
+            <button class="filter-btn" data-filter="burger">Burgers</button>
+            <button class="filter-btn" data-filter="pasta">Pasta</button>
+            <button class="filter-btn" data-filter="drinks">Drinks</button>
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="menu-grid">
+            <!-- Items injected by JS -->
+        </div>
+
+    </main>
+
+    <!-- Unified Premium Footer -->
+    <footer class="bg-forest relative overflow-hidden text-creamy pt-24 pb-12 mt-auto border-t-[8px] border-amber">
+        <!-- Decorative Background Elements -->
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber/30 to-transparent">
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+
+                <!-- Brand & Newsletter (Spans 4 cols) -->
+                <div class="lg:col-span-4 space-y-6">
+                    <a href="index.html" class="text-3xl font-serif font-bold flex items-center gap-2 group w-max">
+                        <div
+                            class="w-12 h-12 bg-amber rounded-full flex items-center justify-center text-forest group-hover:rotate-12 transition-transform duration-300 shadow-[0_0_15px_rgba(255,191,0,0.4)]">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <span class="text-white group-hover:text-amber transition-colors">Lake Side</span>
+                    </a>
+                    <p class="text-creamy/70 leading-relaxed text-sm">
+                        Experience the finest dining by the tranquil waters. Where every meal is a masterpiece and every
+                        view is a painting. Join our newsletter for exclusive offers.
+                    </p>
+                    <form class="flex relative w-full max-w-sm group"
+                        onsubmit="event.preventDefault(); window.showToast('Subscribed Successfully!');">
+                        <input type="email" placeholder="Your email address"
+                            class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-full px-6 py-3 focus:outline-none focus:border-amber focus:bg-white/20 transition-all duration-300"
+                            required>
+                        <button type="submit"
+                            class="absolute right-1 top-1 bottom-1 bg-amber text-forest font-bold px-6 rounded-full hover:bg-white transition-colors flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Quick Links (Spans 2 cols) -->
+                <div class="lg:col-span-2 lg:col-start-6">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-amber tracking-wide uppercase text-sm">Explore
+                    </h4>
+                    <ul class="space-y-4">
+                        <li><a href="index.html"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Home</a></li>
+                        <li><a href="menu.html"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Our Menu</a></li>
+                        <li><a href="index.html#about"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>About Us</a></li>
+                        <li><a href="cart.html"
+                                class="text-creamy/70 hover:text-amber hover:translate-x-2 inline-block transition-all duration-300"><i
+                                    class="fa-solid fa-chevron-right text-xs mr-2 opacity-50"></i>Checkout</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact (Spans 3 cols) -->
+                <div class="lg:col-span-3">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-amber tracking-wide uppercase text-sm">Contact
+                        Info</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4 group">
+                            <div
+                                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber group-hover:text-forest transition-colors text-amber flex-shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span class="text-creamy/70 text-sm mt-1 leading-relaxed">2nd & 3rd floor, Cafe & Eatery,
+                                Lake Side, Plot no 162, Sector-9, New Panvel East, Panvel, Maharashtra 410206</span>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <div
+                                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber group-hover:text-forest transition-colors text-amber flex-shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span class="text-creamy/70 text-sm">086578 85181</span>
+                        </li>
+                        <li
+                            class="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-xl transition-colors">
+                            <div
+                                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-amber group-hover:text-forest transition-colors text-amber flex-shrink-0">
+                                <i class="fa-brands fa-google text-lg"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="text-amber text-sm font-bold flex items-center gap-1">
+                                    4.2 <i class="fa-solid fa-star text-xs"></i><i
+                                        class="fa-solid fa-star text-xs"></i><i class="fa-solid fa-star text-xs"></i><i
+                                        class="fa-solid fa-star text-xs"></i><i
+                                        class="fa-solid fa-star-half-stroke text-xs"></i>
+                                </div>
+                                <span class="text-creamy/70 text-xs mt-0.5">1007 Google Reviews</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Opening Hours (Spans 3 cols) -->
+                <div class="lg:col-span-3">
+                    <h4 class="text-lg font-serif font-bold mb-6 text-amber tracking-wide uppercase text-sm">Opening
+                        Hours</h4>
+                    <div class="bg-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm">
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex justify-between items-center border-b border-white/10 pb-3">
+                                <span class="text-creamy/70">Mon - Fri</span>
+                                <span class="font-bold text-white bg-white/10 px-3 py-1 rounded-full">8 AM - 10
+                                    PM</span>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-white/10 pb-3">
+                                <span class="text-creamy/70">Saturday</span>
+                                <span class="font-bold text-white bg-white/10 px-3 py-1 rounded-full">9 AM - 11
+                                    PM</span>
+                            </li>
+                            <li class="flex justify-between items-center pt-1">
+                                <span class="text-creamy/70">Sunday</span>
+                                <span
+                                    class="font-bold text-amber bg-amber/10 border border-amber/20 px-3 py-1 rounded-full">Closed</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div
+                class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-sm text-creamy/50">
+                <p>&copy; 2026 Lake Side Cafe. Crafted with <i
+                        class="fa-solid fa-heart text-amber mx-1 animate-pulse"></i> for excellence.</p>
+
+                <!-- Social Icons -->
+                <div class="flex gap-3 mt-4 md:mt-0">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#1877F2] hover:text-white hover:-translate-y-1 transition-all duration-300 text-creamy/70 shadow-lg">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#E4405F] hover:text-white hover:-translate-y-1 transition-all duration-300 text-creamy/70 shadow-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#1DA1F2] hover:text-white hover:-translate-y-1 transition-all duration-300 text-creamy/70 shadow-lg">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Global JS -->
+    <script src="main.js"></script>
+
+    <!-- Menu Logic -->
+    <script>
+        const menuItems = [
+            { id: 'vs1', name: 'Cream of Tomato Soup', price: 120, category: 'veg-soup', desc: 'Rich, smooth, and roasted tomato goodness served with garlic croutons.', image: 'Cream of Tomato Soup.avif' },
+            { id: 'vs2', name: 'Sweet Corn Veg Soup', price: 110, category: 'veg-soup', desc: 'A classic Indo-Chinese style comforting soup with fresh corn kernels.', image: 'Sweet Corn Veg Soup.png' },
+            { id: 'nvs1', name: 'Chicken Clear Soup', price: 150, category: 'non-veg-soup', desc: 'Light, healthy chicken broth with shredded chicken and seasonal greens.', image: 'Chicken Clear Soup.png' },
+            { id: 'sal1', name: 'Greek Salad', price: 180, category: 'salad', desc: 'Crisp cucumbers, tomatoes, feta cheese, and olives with olive oil dressing.', image: 'Greek Salad.avif' },
+            { id: 'mc1', name: 'Paneer Butter Masala', price: 280, category: 'main-course', desc: 'Soft paneer cubes in a rich, creamy, and mildly sweet tomato gravy. (North Indian)', image: 'Paneer Butter Masala.png' },
+            { id: 'mc2', name: 'Hakka Noodles', price: 220, category: 'main-course', desc: 'Wok-tossed noodles with julienned vegetables and soy sauce. (Chinese)', image: 'Hakka Noodles.avif' },
+            { id: 'bg1', name: 'Classic Gourmet Veg Burger', price: 190, category: 'burger', desc: 'A crispy vegetable patty with fresh lettuce, tomato, and our signature sauce.', image: 'Classic Gourmet Veg Burger.avif' },
+            { id: 'bg2', name: 'Double Cheese Chicken Burger', price: 250, category: 'burger', desc: 'Juicy grilled chicken breast with double cheddar and caramelized onions.', image: 'Double Cheese Chicken Burger.avif' },
+            { id: 'ps1', name: 'Arrabbiata Pasta (Red)', price: 260, category: 'pasta', desc: 'Penne pasta tossed in a spicy, garlicky tomato sauce with fresh basil.', image: 'Arrabbiata Pasta (Red).avif' },
+            { id: 'ps2', name: 'Alfredo Pasta (White)', price: 280, category: 'pasta', desc: 'Creamy, cheesy white sauce with mushrooms and a hint of nutmeg.', image: 'Alfredo Pasta (White).avif' },
+            { id: 'dr1', name: 'Lake Side Signature Coffee', price: 140, category: 'drinks', desc: 'Our premium espresso blend with steamed milk and hazelnut syrup.', image: 'Lake Side Signature Coffee.avif' },
+            { id: 'dr2', name: 'Fresh Mint Mojito', price: 160, category: 'drinks', desc: 'Refreshing mocktail with fresh mint, lime juice, and a splash of soda.', image: 'Fresh Mint Mojito.avif' }
+        ];
+
+        const grid = document.getElementById('menu-grid');
+        const filters = document.querySelectorAll('.filter-btn');
+
+        const renderItems = (category) => {
+            grid.innerHTML = '';
+
+            const filteredItems = category === 'all'
+                ? menuItems
+                : menuItems.filter(item => item.category === category);
+
+            if (filteredItems.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10">No items found in this category.</p>';
+                return;
+            }
+
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col opacity-0 animate-fade-in-up';
+
+                card.innerHTML = `
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-forest font-bold text-sm shadow-sm">
+                            ₹${item.price}
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-serif font-bold text-forest mb-2">${item.name}</h3>
+                        <p class="text-gray-600 text-sm mb-6 flex-grow leading-relaxed">${item.desc}</p>
+                        <div class="flex gap-2">
+                            <button onclick='window.addToCart(${JSON.stringify(item)})' class="w-full btn-primary text-center group">
+                                <i class="fa-solid fa-plus mr-2 group-hover:rotate-90 transition-transform duration-300"></i> Add
+                            </button>
+                            <button onclick="open3DModal('${item.id}')" class="bg-forest text-amber px-4 py-2 rounded-full hover:bg-forest-light transition-colors flex items-center justify-center group shadow-md border border-amber/20" title="View in 3D">
+                                <i class="fa-solid fa-cube group-hover:animate-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        // Initialize with 'all'
+        renderItems('all');
+
+        // Filter functionality
+        filters.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                filters.forEach(f => f.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Render
+                renderItems(btn.dataset.filter);
+            });
+        });
+    </script>
+
+    <!-- 3D Viewer Modal -->
+    <div id="modal-3d"
+        class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="close3DModal()"></div>
+        <div class="bg-creamy-dark w-11/12 md:w-3/4 lg:w-1/2 max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative z-10 scale-95 transition-transform duration-300"
+            id="modal-3d-content">
+            <button onclick="close3DModal()"
+                class="absolute top-4 right-4 z-20 bg-white/20 hover:bg-white/40 text-forest w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="h-[60vh] w-full bg-gradient-to-br from-woody/20 to-forest/20 relative">
+                <model-viewer id="model-viewer-element" src="models/pizza.glb" alt="A 3D model of a dish" auto-rotate
+                    camera-controls shadow-intensity="1" environment-image="neutral" exposure="1"
+                    class="w-full h-full outline-none"></model-viewer>
+            </div>
+            <div class="p-6 bg-white text-center">
+                <h3 id="modal-3d-title" class="text-2xl font-serif font-bold text-forest mb-2">Item Name</h3>
+                <p class="text-gray-600 text-sm mb-4">Drag to rotate. Scroll to zoom.</p>
+                <button onclick="addCurrent3DItemToCart()"
+                    class="btn-primary inline-flex items-center justify-center gap-2 w-auto px-8">
+                    <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 3D Modal Logic
+        let current3DItem = null;
+
+        window.open3DModal = (itemId) => {
+            const item = menuItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            current3DItem = item;
+
+            // Set details
+            document.getElementById('modal-3d-title').textContent = item.name;
+
+            const modelViewer = document.getElementById('model-viewer-element');
+            // Assuming we only have pizza.glb locally, we use it for everything
+            modelViewer.src = 'models/pizza.glb';
+
+            // Show modal
+            const modal = document.getElementById('modal-3d');
+            const modalContent = document.getElementById('modal-3d-content');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+
+            // Stop body scroll
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.close3DModal = () => {
+            const modal = document.getElementById('modal-3d');
+            const modalContent = document.getElementById('modal-3d-content');
+
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+
+            // Restore body scroll
+            document.body.style.overflow = '';
+        };
+
+        window.addCurrent3DItemToCart = () => {
+            if (current3DItem) {
+                window.addToCart(current3DItem);
+                close3DModal();
+            }
+        };
+
+        // Try 3D Menu (Beta) button logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const try3DBtn = document.getElementById('try-3d-btn');
+            if (try3DBtn) {
+                try3DBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Open the first item as a demo
+                    open3DModal(menuItems[0].id);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

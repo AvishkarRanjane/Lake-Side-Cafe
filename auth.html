@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | Lake Side Cafe</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: { DEFAULT: '#013220', light: '#0A4A33' },
+                        woody: { DEFAULT: '#5C4033', light: '#7A5A4A' },
+                        amber: { DEFAULT: '#FFBF00', hover: '#E5A800' },
+                        creamy: { DEFAULT: '#FAFAF7', dark: '#F0F0E8' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-auth {
+                @apply bg-white/20 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] rounded-3xl p-8 w-full max-w-md mx-auto relative overflow-hidden;
+            }
+            .input-field {
+                @apply w-full bg-white/10 border border-white/20 text-white placeholder-white/70 rounded-xl px-4 py-3 focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber transition-all duration-300;
+            }
+            .btn-primary {
+                @apply w-full bg-amber text-forest font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white hover:text-forest hover:shadow-[0_0_15px_rgba(255,255,255,0.5)];
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased flex flex-col min-h-screen relative overflow-x-hidden">
+
+    <!-- Background Image -->
+    <div class="fixed inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=1920&q=80"
+            alt="Cafe Background" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-forest/70 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+    </div>
+
+    <!-- Navigation Overlay -->
+    <div class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center">
+        <a href="index.html"
+            class="text-3xl font-serif font-bold text-creamy flex items-center gap-2 hover:text-amber transition-colors">
+            <i class="fa-solid fa-arrow-left"></i> Home
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center relative z-10 px-4 py-20">
+
+        <div class="glass-auth animate-fade-in-up">
+            <!-- Decorative blur blobs inside the card -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber/30 rounded-full mix-blend-screen filter blur-xl">
+            </div>
+            <div
+                class="absolute -bottom-10 -left-10 w-32 h-32 bg-creamy/20 rounded-full mix-blend-screen filter blur-xl">
+            </div>
+
+            <div class="relative z-10">
+                <div class="text-center mb-8">
+                    <i class="fa-solid fa-mug-hot text-amber text-4xl mb-4"></i>
+                    <h2 class="text-3xl font-serif font-bold text-white mb-2" id="form-title">Welcome Back</h2>
+                    <p class="text-white/80 text-sm" id="form-subtitle">Sign in to continue to your account.</p>
+                </div>
+
+                <!-- Form -->
+                <form id="auth-form" class="space-y-5" onsubmit="event.preventDefault();">
+
+                    <div id="name-field-group" class="hidden opacity-0 transition-opacity duration-500">
+                        <label class="block text-white/90 text-sm font-medium mb-1">Full Name</label>
+                        <div class="relative">
+                            <i
+                                class="fa-regular fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70"></i>
+                            <input type="text" id="name" class="input-field pl-11" placeholder="John Doe">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/90 text-sm font-medium mb-1">Email Address</label>
+                        <div class="relative">
+                            <i
+                                class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70"></i>
+                            <input type="email" id="email" class="input-field pl-11" placeholder="you@example.com"
+                                required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="block text-white/90 text-sm font-medium">Password</label>
+                            <a href="#" class="text-amber text-xs hover:underline" id="forgot-password">Forgot?</a>
+                        </div>
+                        <div class="relative">
+                            <i
+                                class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70"></i>
+                            <input type="password" id="password" class="input-field pl-11" placeholder="••••••••"
+                                required>
+                            <button type="button"
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white"
+                                onclick="togglePassword()">
+                                <i class="fa-regular fa-eye" id="eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary mt-6" id="submit-btn">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center border-t border-white/20 pt-6">
+                    <p class="text-white/80 text-sm">
+                        <span id="toggle-text">Don't have an account?</span>
+                        <button class="text-amber font-bold hover:underline ml-1 focus:outline-none"
+                            onclick="toggleMode()" id="toggle-btn">Sign Up</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global JS (mainly for toast) -->
+    <script src="main.js"></script>
+
+    <!-- Auth Logic -->
+    <script>
+        let isLoginMode = true;
+
+        const formTitle = document.getElementById('form-title');
+        const formSubtitle = document.getElementById('form-subtitle');
+        const nameGroup = document.getElementById('name-field-group');
+        const submitBtn = document.getElementById('submit-btn');
+        const toggleText = document.getElementById('toggle-text');
+        const toggleBtn = document.getElementById('toggle-btn');
+        const forgotPassword = document.getElementById('forgot-password');
+
+        function toggleMode() {
+            isLoginMode = !isLoginMode;
+
+            if (isLoginMode) {
+                // Switch to Login
+                formTitle.textContent = 'Welcome Back';
+                formSubtitle.textContent = 'Sign in to continue to your account.';
+
+                nameGroup.classList.add('hidden', 'opacity-0');
+
+                submitBtn.textContent = 'Sign In';
+                toggleText.textContent = "Don't have an account?";
+                toggleBtn.textContent = 'Sign Up';
+                forgotPassword.style.display = 'block';
+
+            } else {
+                // Switch to Sign Up
+                formTitle.textContent = 'Create Account';
+                formSubtitle.textContent = 'Join us for an exclusive dining experience.';
+
+                nameGroup.classList.remove('hidden');
+                // Small delay to allow display:block to apply before animating opacity
+                setTimeout(() => {
+                    nameGroup.classList.remove('opacity-0');
+                }, 10);
+
+                submitBtn.textContent = 'Create Account';
+                toggleText.textContent = "Already have an account?";
+                toggleBtn.textContent = 'Sign In';
+                forgotPassword.style.display = 'none';
+            }
+        }
+
+        function togglePassword() {
+            const pwdInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Mock form submission
+        document.getElementById('auth-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const action = isLoginMode ? 'Signed in' : 'Account created';
+            window.showToast(`${action} successfully! Redirecting...`);
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>
