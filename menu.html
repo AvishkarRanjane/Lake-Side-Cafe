@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu | Lake Side Cafe</title>
+    <link rel="icon" href="assets/images/menu/lakeside-signature-coffee.avif">
 
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -129,22 +130,32 @@
                 <!-- A placeholder illustration for the 3D model -->
                 <div class="relative w-48 h-48">
                     <div class="absolute inset-0 bg-amber/20 rounded-full animate-ping"></div>
-                    <img src="Pizza.avif" alt="3D Pizza Placeholder"
+                    <img src="assets/images/menu/pizza.avif" alt="3D Pizza Placeholder"
                         class="w-full h-full object-cover rounded-full border-4 border-amber shadow-2xl z-10 relative transform hover:rotate-12 transition-transform duration-500" />
                 </div>
             </div>
         </div>
 
-        <!-- Filters -->
-        <div class="flex overflow-x-auto gap-4 pb-4 mb-10 no-scrollbar" id="menu-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="veg-soup">Veg Soups</button>
-            <button class="filter-btn" data-filter="non-veg-soup">Non-Veg Soups</button>
-            <button class="filter-btn" data-filter="salad">Salads</button>
-            <button class="filter-btn" data-filter="main-course">Main Course</button>
-            <button class="filter-btn" data-filter="burger">Burgers</button>
-            <button class="filter-btn" data-filter="pasta">Pasta</button>
-            <button class="filter-btn" data-filter="drinks">Drinks</button>
+        <!-- Search & Category Filters -->
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+            <!-- Search Bar -->
+            <div class="relative w-full md:w-72">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="menu-search" placeholder="Search menu items..."
+                    class="w-full bg-white border border-gray-200 rounded-full pl-11 pr-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest transition-all shadow-sm" />
+            </div>
+
+            <!-- Category Filter Buttons -->
+            <div class="flex overflow-x-auto gap-3 w-full md:w-auto pb-2 md:pb-0 no-scrollbar" id="menu-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="veg-soup">Veg Soups</button>
+                <button class="filter-btn" data-filter="non-veg-soup">Non-Veg Soups</button>
+                <button class="filter-btn" data-filter="salad">Salads</button>
+                <button class="filter-btn" data-filter="main-course">Main Course</button>
+                <button class="filter-btn" data-filter="burger">Burgers</button>
+                <button class="filter-btn" data-filter="pasta">Pasta</button>
+                <button class="filter-btn" data-filter="drinks">Drinks</button>
+            </div>
         </div>
 
         <!-- Menu Grid -->
@@ -305,32 +316,39 @@
     <!-- Menu Logic -->
     <script>
         const menuItems = [
-            { id: 'vs1', name: 'Cream of Tomato Soup', price: 120, category: 'veg-soup', desc: 'Rich, smooth, and roasted tomato goodness served with garlic croutons.', image: 'Cream of Tomato Soup.avif' },
-            { id: 'vs2', name: 'Sweet Corn Veg Soup', price: 110, category: 'veg-soup', desc: 'A classic Indo-Chinese style comforting soup with fresh corn kernels.', image: 'Sweet Corn Veg Soup.png' },
-            { id: 'nvs1', name: 'Chicken Clear Soup', price: 150, category: 'non-veg-soup', desc: 'Light, healthy chicken broth with shredded chicken and seasonal greens.', image: 'Chicken Clear Soup.png' },
-            { id: 'sal1', name: 'Greek Salad', price: 180, category: 'salad', desc: 'Crisp cucumbers, tomatoes, feta cheese, and olives with olive oil dressing.', image: 'Greek Salad.avif' },
-            { id: 'mc1', name: 'Paneer Butter Masala', price: 280, category: 'main-course', desc: 'Soft paneer cubes in a rich, creamy, and mildly sweet tomato gravy. (North Indian)', image: 'Paneer Butter Masala.png' },
-            { id: 'mc2', name: 'Hakka Noodles', price: 220, category: 'main-course', desc: 'Wok-tossed noodles with julienned vegetables and soy sauce. (Chinese)', image: 'Hakka Noodles.avif' },
-            { id: 'bg1', name: 'Classic Gourmet Veg Burger', price: 190, category: 'burger', desc: 'A crispy vegetable patty with fresh lettuce, tomato, and our signature sauce.', image: 'Classic Gourmet Veg Burger.avif' },
-            { id: 'bg2', name: 'Double Cheese Chicken Burger', price: 250, category: 'burger', desc: 'Juicy grilled chicken breast with double cheddar and caramelized onions.', image: 'Double Cheese Chicken Burger.avif' },
-            { id: 'ps1', name: 'Arrabbiata Pasta (Red)', price: 260, category: 'pasta', desc: 'Penne pasta tossed in a spicy, garlicky tomato sauce with fresh basil.', image: 'Arrabbiata Pasta (Red).avif' },
-            { id: 'ps2', name: 'Alfredo Pasta (White)', price: 280, category: 'pasta', desc: 'Creamy, cheesy white sauce with mushrooms and a hint of nutmeg.', image: 'Alfredo Pasta (White).avif' },
-            { id: 'dr1', name: 'Lake Side Signature Coffee', price: 140, category: 'drinks', desc: 'Our premium espresso blend with steamed milk and hazelnut syrup.', image: 'Lake Side Signature Coffee.avif' },
-            { id: 'dr2', name: 'Fresh Mint Mojito', price: 160, category: 'drinks', desc: 'Refreshing mocktail with fresh mint, lime juice, and a splash of soda.', image: 'Fresh Mint Mojito.avif' }
+            { id: 'vs1', name: 'Cream of Tomato Soup', price: 120, category: 'veg-soup', desc: 'Rich, smooth, and roasted tomato goodness served with garlic croutons.', image: 'assets/images/menu/cream-of-tomato-soup.avif' },
+            { id: 'vs2', name: 'Sweet Corn Veg Soup', price: 110, category: 'veg-soup', desc: 'A classic Indo-Chinese style comforting soup with fresh corn kernels.', image: 'assets/images/menu/sweet-corn-veg-soup.png' },
+            { id: 'nvs1', name: 'Chicken Clear Soup', price: 150, category: 'non-veg-soup', desc: 'Light, healthy chicken broth with shredded chicken and seasonal greens.', image: 'assets/images/menu/chicken-clear-soup.png' },
+            { id: 'sal1', name: 'Greek Salad', price: 180, category: 'salad', desc: 'Crisp cucumbers, tomatoes, feta cheese, and olives with olive oil dressing.', image: 'assets/images/menu/greek-salad.avif' },
+            { id: 'mc1', name: 'Paneer Butter Masala', price: 280, category: 'main-course', desc: 'Soft paneer cubes in a rich, creamy, and mildly sweet tomato gravy. (North Indian)', image: 'assets/images/menu/paneer-butter-masala.png' },
+            { id: 'mc2', name: 'Hakka Noodles', price: 220, category: 'main-course', desc: 'Wok-tossed noodles with julienned vegetables and soy sauce. (Chinese)', image: 'assets/images/menu/hakka-noodles.avif' },
+            { id: 'bg1', name: 'Classic Gourmet Veg Burger', price: 190, category: 'burger', desc: 'A crispy vegetable patty with fresh lettuce, tomato, and our signature sauce.', image: 'assets/images/menu/classic-gourmet-veg-burger.avif' },
+            { id: 'bg2', name: 'Double Cheese Chicken Burger', price: 250, category: 'burger', desc: 'Juicy grilled chicken breast with double cheddar and caramelized onions.', image: 'assets/images/menu/double-cheese-chicken-burger.avif' },
+            { id: 'ps1', name: 'Arrabbiata Pasta (Red)', price: 260, category: 'pasta', desc: 'Penne pasta tossed in a spicy, garlicky tomato sauce with fresh basil.', image: 'assets/images/menu/arrabbiata-pasta-red.avif' },
+            { id: 'ps2', name: 'Alfredo Pasta (White)', price: 280, category: 'pasta', desc: 'Creamy, cheesy white sauce with mushrooms and a hint of nutmeg.', image: 'assets/images/menu/alfredo-pasta-white.avif' },
+            { id: 'dr1', name: 'Lake Side Signature Coffee', price: 140, category: 'drinks', desc: 'Our premium espresso blend with steamed milk and hazelnut syrup.', image: 'assets/images/menu/lakeside-signature-coffee.avif' },
+            { id: 'dr2', name: 'Fresh Mint Mojito', price: 160, category: 'drinks', desc: 'Refreshing mocktail with fresh mint, lime juice, and a splash of soda.', image: 'assets/images/menu/fresh-mint-mojito.avif' }
         ];
 
         const grid = document.getElementById('menu-grid');
         const filters = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('menu-search');
 
-        const renderItems = (category) => {
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        const renderItems = () => {
             grid.innerHTML = '';
 
-            const filteredItems = category === 'all'
-                ? menuItems
-                : menuItems.filter(item => item.category === category);
+            const filteredItems = menuItems.filter(item => {
+                const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+                const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                     item.desc.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
 
             if (filteredItems.length === 0) {
-                grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10">No items found in this category.</p>';
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10 font-medium">No items found matching your selection.</p>';
                 return;
             }
 
@@ -362,20 +380,26 @@
             });
         };
 
-        // Initialize with 'all'
-        renderItems('all');
+        // Initial render
+        renderItems();
 
         // Filter functionality
         filters.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Update active state
                 filters.forEach(f => f.classList.remove('active'));
                 btn.classList.add('active');
-
-                // Render
-                renderItems(btn.dataset.filter);
+                activeCategory = btn.dataset.filter;
+                renderItems();
             });
         });
+
+        // Search functionality
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderItems();
+            });
+        }
     </script>
 
     <!-- 3D Viewer Modal -->

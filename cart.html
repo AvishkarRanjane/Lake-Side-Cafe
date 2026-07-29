@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart | Lake Side Cafe</title>
+    <link rel="icon" href="assets/images/menu/lakeside-signature-coffee.avif">
 
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -32,6 +33,9 @@
         @layer utilities {
             .btn-primary {
                 @apply bg-amber text-forest font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:bg-amber-hover hover:shadow-lg w-full flex justify-center items-center gap-2;
+            }
+            .btn-whatsapp {
+                @apply bg-emerald-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:bg-emerald-700 hover:shadow-lg w-full flex justify-center items-center gap-2 mt-3;
             }
             .input-field {
                 @apply w-full bg-creamy-dark border border-gray-200 text-gray-800 rounded-xl px-4 py-3 focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest transition-all;
@@ -144,27 +148,27 @@
                                 <label
                                     class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">First
                                     Name</label>
-                                <input type="text" class="input-field" placeholder="John" required>
+                                <input type="text" id="first-name" class="input-field" placeholder="John" required>
                             </div>
                             <div>
                                 <label
                                     class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">Last
                                     Name</label>
-                                <input type="text" class="input-field" placeholder="Doe" required>
+                                <input type="text" id="last-name" class="input-field" placeholder="Doe" required>
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">Phone
                                 Number</label>
-                            <input type="tel" class="input-field" placeholder="+91 98765 43210" required>
+                            <input type="tel" id="phone-number" class="input-field" placeholder="+91 98765 43210" required>
                         </div>
 
                         <div>
                             <label
                                 class="block text-gray-600 text-xs font-semibold mb-1 uppercase tracking-wider">Delivery
                                 Address</label>
-                            <textarea class="input-field resize-none h-24" placeholder="Enter full address..."
+                            <textarea id="delivery-address" class="input-field resize-none h-24" placeholder="Enter full address..."
                                 required></textarea>
                         </div>
 
@@ -210,6 +214,9 @@
 
                         <button type="submit" class="btn-primary mt-4" id="place-order-btn">
                             Place Order <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button type="button" onclick="placeOrderWhatsApp()" class="btn-whatsapp" id="whatsapp-order-btn">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
                         </button>
                     </form>
                 </div>
@@ -466,6 +473,46 @@
             window.updateCartCountDisplay();
             renderCart();
             window.showToast("Item removed from cart");
+        };
+
+        // Handle WhatsApp order checkout
+        window.placeOrderWhatsApp = () => {
+            const cart = JSON.parse(localStorage.getItem('lakeSideCart')) || [];
+            if (cart.length === 0) {
+                window.showToast('Your cart is empty!');
+                return;
+            }
+
+            const firstName = document.getElementById('first-name')?.value || 'Guest';
+            const lastName = document.getElementById('last-name')?.value || '';
+            const phone = document.getElementById('phone-number')?.value || 'N/A';
+            const address = document.getElementById('delivery-address')?.value || 'Pickup at Cafe';
+
+            let itemsList = '';
+            let subtotal = 0;
+            cart.forEach((item, idx) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                itemsList += `${idx + 1}. ${item.name} x${item.quantity} = ₹${itemTotal}\n`;
+            });
+
+            const gst = Math.round(subtotal * 0.05);
+            const total = subtotal + gst + 40;
+
+            const message = `*New Order - Lake Side Cafe*\n\n` +
+                `*Customer:* ${firstName} ${lastName}\n` +
+                `*Phone:* ${phone}\n` +
+                `*Address:* ${address}\n\n` +
+                `*Order Items:*\n${itemsList}\n` +
+                `*Subtotal:* ₹${subtotal}\n` +
+                `*GST (5%):* ₹${gst}\n` +
+                `*Delivery Fee:* ₹40\n` +
+                `*Grand Total:* ₹${total}\n\n` +
+                `Thank you! Please confirm my order.`;
+
+            const cafePhoneNumber = '918657885181';
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${cafePhoneNumber}?text=${encodedMessage}`, '_blank');
         };
 
         // Handle checkout
