@@ -29,6 +29,16 @@
             }
         }
     </script>
+    <style>
+        .input-left-icon {
+            padding-left: 3.5rem !important;
+            padding-right: 1rem !important;
+        }
+        .input-both-icon {
+            padding-left: 3.5rem !important;
+            padding-right: 3.5rem !important;
+        }
+    </style>
     <style type="text/tailwindcss">
         @layer utilities {
             .glass-auth {
@@ -36,14 +46,6 @@
             }
             .input-field {
                 @apply w-full bg-white/10 border border-white/20 text-white placeholder-white/60 rounded-xl py-3 focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber transition-all duration-300;
-            }
-            .input-field-icon-left {
-                padding-left: 3.25rem !important;
-                padding-right: 1rem !important;
-            }
-            .input-field-icon-both {
-                padding-left: 3.25rem !important;
-                padding-right: 3.25rem !important;
             }
             .btn-primary {
                 @apply w-full bg-amber text-forest font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white hover:text-forest hover:shadow-[0_0_15px_rgba(255,255,255,0.5)];
@@ -93,19 +95,19 @@
 
                     <div id="name-field-group" class="hidden opacity-0 transition-opacity duration-500">
                         <label class="block text-white/90 text-sm font-medium mb-1">Full Name</label>
-                        <div class="relative">
+                        <div class="relative flex items-center">
                             <i
-                                class="fa-regular fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 text-lg pointer-events-none"></i>
-                            <input type="text" id="name" class="input-field input-field-icon-left" placeholder="John Doe">
+                                class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg pointer-events-none z-10"></i>
+                            <input type="text" id="name" class="input-field input-left-icon !pl-14 !pr-4" style="padding-left: 3.5rem !important; padding-right: 1rem !important;" placeholder="John Doe">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-white/90 text-sm font-medium mb-1">Email Address</label>
-                        <div class="relative">
+                        <div class="relative flex items-center">
                             <i
-                                class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 text-lg pointer-events-none"></i>
-                            <input type="email" id="email" class="input-field input-field-icon-left" placeholder="you@example.com"
+                                class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg pointer-events-none z-10"></i>
+                            <input type="email" id="email" class="input-field input-left-icon !pl-14 !pr-4" style="padding-left: 3.5rem !important; padding-right: 1rem !important;" placeholder="you@example.com"
                                 required>
                         </div>
                     </div>
@@ -115,13 +117,13 @@
                             <label class="block text-white/90 text-sm font-medium">Password</label>
                             <a href="#" class="text-amber text-xs hover:underline" id="forgot-password">Forgot?</a>
                         </div>
-                        <div class="relative">
+                        <div class="relative flex items-center">
                             <i
-                                class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 text-lg pointer-events-none"></i>
-                            <input type="password" id="password" class="input-field input-field-icon-both" placeholder="••••••••"
+                                class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg pointer-events-none z-10"></i>
+                            <input type="password" id="password" class="input-field input-both-icon !pl-14 !pr-14" style="padding-left: 3.5rem !important; padding-right: 3.5rem !important;" placeholder="••••••••"
                                 required>
                             <button type="button"
-                                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10"
                                 onclick="togglePassword()">
                                 <i class="fa-regular fa-eye text-lg" id="eye-icon"></i>
                             </button>
