@@ -17,10 +17,10 @@
             theme: {
                 extend: {
                     colors: {
-                        forest: { DEFAULT: '#013220', light: '#0A4A33' },
-                        woody: { DEFAULT: '#5C4033', light: '#7A5A4A' },
-                        amber: { DEFAULT: '#FFBF00', hover: '#E5A800' },
-                        creamy: { DEFAULT: '#FAFAF7', dark: '#F0F0E8' }
+                        forest: { DEFAULT: '#3B2A20', light: '#5A4335' },
+                        woody: { DEFAULT: '#7C8B6E', light: '#9BAA8D' },
+                        amber: { DEFAULT: '#C4653A', hover: '#D97A50' },
+                        creamy: { DEFAULT: '#F5EBDD', dark: '#E6D9C8' }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -415,6 +415,7 @@
             <div class="h-[60vh] w-full bg-gradient-to-br from-woody/20 to-forest/20 relative">
                 <model-viewer id="model-viewer-element" src="models/pizza.glb" alt="A 3D model of a dish" auto-rotate
                     camera-controls shadow-intensity="1" environment-image="neutral" exposure="1"
+                    loading="lazy" poster="assets/images/menu/paneer-butter-masala.png" reveal="interaction"
                     class="w-full h-full outline-none"></model-viewer>
             </div>
             <div class="p-6 bg-white text-center">
